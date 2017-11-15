@@ -5,7 +5,7 @@
 
 TreeView::TreeView(QWidget *parent): QWidget(parent), tree(nullptr){}
 
-void TreeView::setTree(const BinTree* tree){
+void TreeView::setTree(const code_tree::Node* tree){
     this->tree = tree;
     update();
 }
@@ -15,7 +15,7 @@ void TreeView::paintEvent(QPaintEvent *){
     drawNode(&painter, tree, 0, 0);
 }
 
-void TreeView::drawNode(QPainter *painter, const BinTree* root, int x, int y){
+void TreeView::drawNode(QPainter *painter, const code_tree::Node* root, int x, int y){
     if(root==nullptr)return;
 
     painter->save();

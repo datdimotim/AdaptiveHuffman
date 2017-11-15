@@ -3,21 +3,21 @@
 
 #include <QWidget>
 
-#include "bintree.h"
+#include "codetree.h"
 
 class TreeView : public QWidget{
     Q_OBJECT
 
 public:
     explicit TreeView(QWidget *parent = 0);
-    void setTree(const BinTree *data);
+    void setTree(const code_tree::Node* data);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
-    void drawNode(QPainter *painter, const BinTree* root, int x, int y);
-    const BinTree* tree;
+    void drawNode(QPainter *painter, const code_tree::Node* root, int x, int y);
+    const code_tree::Node* tree;
     const int nodeWidth{ 80 };
     const int nodeHeight{ 80 };
 };

@@ -9,7 +9,7 @@ TreeWidget::TreeWidget(QWidget *parent) : QWidget(parent){
     view_ = new TreeView(this);
     view_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    view_->setTree(data);
+    view_->setTree(root);
 
     QLabel *label = new QLabel("Введите элемент: ");
     lineEdit_ = new QLineEdit();
@@ -29,26 +29,11 @@ TreeWidget::TreeWidget(QWidget *parent) : QWidget(parent){
     connect(button_, &QPushButton::clicked, this, &TreeWidget::insert);
 }
 
-BinTree* fill(int n, int d, BinTree* root){
-    if(d==0)return root;
-    root=BinTree::insert(root, n);
-    root->right=fill(n+n/2,d-1,root->right);
-    root->left=fill(n-n/2,d-1,root->left);
-    return root;
-}
 
 void TreeWidget::insert(){
-    bool ok;
-    int value = lineEdit_->text().toInt(&ok);
-    if (ok == false) {
-        QMessageBox::warning(this, "Вставка в бинарное дерево",
-                             "Вы ввели не число!",
-                             QMessageBox::Ok, QMessageBox::Ok);
-        return;
-    }
-    data=fill(64,6,data);
-    //data=BinTree::insert(data,value);
-    view_->setTree(data);
+    unsigned char* str = (unsigned char*)lineEdit_->text().toStdString().c_str();
+    root=data->updateTree(*str);
+    view_->setTree(root);
     update();
 }
 

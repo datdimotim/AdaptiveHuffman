@@ -13,12 +13,14 @@ TEMPLATE = app
 CONFIG += c++11
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    treeview.cpp \
-    treewidget.cpp
+SOURCES += main.cpp       \
+           mainwindow.cpp \
+           treeview.cpp   \
+           treewidget.cpp \
+           codetree.cpp
 
-HEADERS  += mainwindow.h \
-    treeview.h \
-    treewidget.h \
-    bintree.h
+HEADERS  += mainwindow.h  \
+            treeview.h    \
+            treewidget.h  \
+            bintree.h     \
+            codetree.h

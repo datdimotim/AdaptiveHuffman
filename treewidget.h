@@ -6,7 +6,7 @@
 #include <QPushButton>
 
 #include "treeview.h"
-#include "bintree.h"
+#include "codetree.h"
 
 class TreeWidget : public QWidget{
     Q_OBJECT
@@ -20,7 +20,8 @@ private:
     TreeView *view_;
     QLineEdit *lineEdit_;
     QPushButton *button_;
-    BinTree* data;
+    code_tree::Node* root;
+    code_tree::DemoTree* data=new code_tree::DemoTree();
 };
 
 #endif // TREEWIDGET_H
