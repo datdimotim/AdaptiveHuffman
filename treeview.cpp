@@ -24,7 +24,7 @@ void TreeView::drawNode(QPainter *painter, const BinTree* root, int x, int y){
     // circle
     QRect rec(p.x() - nodeWidth/4, p.y(), nodeWidth/2, nodeHeight/2);
     painter->setPen(Qt::blue);
-    painter->drawEllipse(rec);
+    painter->drawRect(rec);
     painter->setPen(Qt::red);
 
     QFont font = painter->font() ;
@@ -32,7 +32,7 @@ void TreeView::drawNode(QPainter *painter, const BinTree* root, int x, int y){
     painter->setFont(font);
 
     QString text = fontMetrics().elidedText(
-                QString::asprintf("%c\n[%d]",root->symbol,root->weight),
+                QString::asprintf("%c\n%d",root->symbol,root->weight),
                 Qt::ElideLeft, rec.width());
     painter->drawText(rec, Qt::AlignCenter, text);
 

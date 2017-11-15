@@ -29,6 +29,14 @@ TreeWidget::TreeWidget(QWidget *parent) : QWidget(parent){
     connect(button_, &QPushButton::clicked, this, &TreeWidget::insert);
 }
 
+BinTree* fill(int n, int d, BinTree* root){
+    if(d==0)return root;
+    root=BinTree::insert(root, n);
+    root->right=fill(n+n/2,d-1,root->right);
+    root->left=fill(n-n/2,d-1,root->left);
+    return root;
+}
+
 void TreeWidget::insert(){
     bool ok;
     int value = lineEdit_->text().toInt(&ok);
@@ -38,7 +46,8 @@ void TreeWidget::insert(){
                              QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
-    data=BinTree::insert(data,value);
+    data=fill(64,6,data);
+    //data=BinTree::insert(data,value);
     view_->setTree(data);
     update();
 }
