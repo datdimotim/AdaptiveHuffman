@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLineEdit>
 #include <QPushButton>
+#include<QLabel>
 
 #include "treeview.h"
 #include "codetree.h"
@@ -15,13 +16,17 @@ public:
 
 public slots:
     void insert();
+    void next();
+    void back();
 
 private:
     TreeView *view_;
     QLineEdit *lineEdit_;
     QPushButton *button_;
-    code_tree::Node* root;
-    code_tree::DemoTree* data=new code_tree::DemoTree();
+    QLabel *code ;
+
+    std::vector<code_tree::State*> states;
+    int stateIndex=0;
 };
 
 #endif // TREEWIDGET_H

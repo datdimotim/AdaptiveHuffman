@@ -7,6 +7,7 @@
 
 #include"codetree.h"
 #include<iostream>
+#include<QTextStream>
 using namespace std;
 
 namespace code_tree {
@@ -68,7 +69,7 @@ namespace code_tree {
     }
 
     Node* splitESCSymbol(Node* esc, char symbol){
-        Node* root=new Node(0,
+        Node* root=new Node('*',
                             esc->weight,
                             esc->parent,
                             esc,
@@ -107,7 +108,7 @@ namespace code_tree {
     }
 
     Node* initESC(){
-        return new Node(0,0,nullptr,nullptr,nullptr);
+        return new Node('%',0,nullptr,nullptr,nullptr);
     }
 
     void encode(istream &in, ostream &code){
@@ -187,5 +188,40 @@ namespace code_tree {
         if(symbols[symbol]==nullptr)symbols[symbol]=splitESCSymbol(esc,symbol);
         else incrementWeight(symbols[symbol]);
         return root!=nullptr? root:(root=esc->parent);
+    }
+
+
+    void demoEncode(std::vector<State*> &states, char *msg){
+        states.clear();
+        states.push_back(new State(0,"",nullptr));
+        if(*msg=='\0')return;
+        Node* symbols[256]={nullptr};
+        Node* esc=initESC();
+        unsigned char current;
+
+        int inInd=0;
+        int outInd=0;
+        unsigned char firstChar=msg[inInd++];
+        char code[1000]={0};
+        code[outInd++]=firstChar;
+        symbols[firstChar]=splitESCSymbol(esc,firstChar);
+                            states.push_back(new State(inInd,code,rootOfTree(esc)));
+
+        while(msg[inInd]!='\0'){
+            current=msg[inInd++];
+            QTextStream out(stdout);
+            out<<(char)current<<endl;
+            if(symbols[current]==nullptr){
+                outInd+=bitCode(code,outInd,esc);
+                symbols[current]=splitESCSymbol(esc,current);
+                code[outInd++]=current;
+            }
+            else{
+                outInd+=bitCode(code,outInd,symbols[current]);
+                incrementWeight(symbols[current]);
+            }
+                            states.push_back(new State(inInd,code,rootOfTree(esc)));
+        }
+        destroy(esc);
     }
 }

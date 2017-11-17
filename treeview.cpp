@@ -2,10 +2,11 @@
 
 #include <QPainter>
 #include <QFontMetrics>
+#include <sstream>
 
 TreeView::TreeView(QWidget *parent): QWidget(parent), tree(nullptr){}
 
-void TreeView::setTree(const code_tree::Node* tree){
+void TreeView::setTree(const code_tree::BT* tree){
     this->tree = tree;
     update();
 }
@@ -15,7 +16,7 @@ void TreeView::paintEvent(QPaintEvent *){
     drawNode(&painter, tree, 0, 0);
 }
 
-void TreeView::drawNode(QPainter *painter, const code_tree::Node* root, int x, int y){
+void TreeView::drawNode(QPainter *painter, const code_tree::BT* root, int x, int y){
     if(root==nullptr)return;
 
     painter->save();
@@ -31,8 +32,12 @@ void TreeView::drawNode(QPainter *painter, const code_tree::Node* root, int x, i
     font.setPointSize(10);
     painter->setFont(font);
 
+    std::stringstream str;
+    str<<root->symbol<<std::endl<<root->weight;
+
     QString text = fontMetrics().elidedText(
-                QString::asprintf("%c\n%d",root->symbol,root->weight),
+                //QString("%c\n%d").arg(root->symbol).arg(root->weight),
+                QString::fromLatin1(str.str().c_str()),
                 Qt::ElideLeft, rec.width());
     painter->drawText(rec, Qt::AlignCenter, text);
 

@@ -10,14 +10,14 @@ class TreeView : public QWidget{
 
 public:
     explicit TreeView(QWidget *parent = 0);
-    void setTree(const code_tree::Node* data);
+    void setTree(const code_tree::BT* data);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
-    void drawNode(QPainter *painter, const code_tree::Node* root, int x, int y);
-    const code_tree::Node* tree;
+    void drawNode(QPainter *painter, const code_tree::BT* root, int x, int y);
+    const code_tree::BT* tree;
     const int nodeWidth{ 80 };
     const int nodeHeight{ 80 };
 };

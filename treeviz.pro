@@ -22,5 +22,4 @@ SOURCES += main.cpp       \
 HEADERS  += mainwindow.h  \
             treeview.h    \
             treewidget.h  \
-            bintree.h     \
             codetree.h
