@@ -181,19 +181,46 @@ namespace code_tree {
         destroy(esc);
     }
 
-
-    DemoTree::DemoTree(){esc=initESC();}
-    DemoTree::~DemoTree(){destroy(esc);}
-    Node* DemoTree::updateTree(unsigned char symbol){
-        if(symbols[symbol]==nullptr)symbols[symbol]=splitESCSymbol(esc,symbol);
-        else incrementWeight(symbols[symbol]);
-        return root!=nullptr? root:(root=esc->parent);
+    void incrementWeightDemo(Node* n, std::vector<State*> &states, char current, char* code){
+        n->weight++;
+                            states.push_back(new State(current,code,rootOfTree(n)));
+        if(n->parent==nullptr)return;
+        Node* next=n->next;
+        if(next==n->parent)next=next->next;
+        if(next!=nullptr&&next->weight<n->weight){
+            resolve(n);
+                            states.push_back(new State(current,code,rootOfTree(n)));
+        }
+        incrementWeightDemo(n->parent, states, current, code);
     }
 
+    Node* splitESCSymbolDemo(Node* esc, char symbol, std::vector<State*> &states,  char* code){
+        Node* root=new Node('*',
+                            esc->weight,
+                            esc->parent,
+                            esc,
+                            new Node(symbol,1,nullptr,nullptr,nullptr)
+                            );
+        if(esc->parent!=nullptr){
+            if(isLeft(esc))root->parent->left=root;
+                else root->parent->right=root;
+        }
+        esc->parent=root;
+        root->right->parent=root;
+
+        root->next=esc->next;
+        if(root->next!=nullptr)root->next->back=root;
+        root->back=root->right;
+        root->back->next=root;
+        esc->next=root->back;
+        esc->next->back=esc;
+        incrementWeightDemo(root, states, symbol, code);
+        return root->right;
+    }
 
     void demoEncode(std::vector<State*> &states, char *msg){
         states.clear();
-        states.push_back(new State(0,"",nullptr));
+                            states.push_back(new State(0,"",nullptr));
         if(*msg=='\0')return;
         Node* symbols[256]={nullptr};
         Node* esc=initESC();
@@ -204,23 +231,19 @@ namespace code_tree {
         unsigned char firstChar=msg[inInd++];
         char code[1000]={0};
         code[outInd++]=firstChar;
-        symbols[firstChar]=splitESCSymbol(esc,firstChar);
-                            states.push_back(new State(inInd,code,rootOfTree(esc)));
+        symbols[firstChar]=splitESCSymbolDemo(esc,firstChar,states, code);
 
         while(msg[inInd]!='\0'){
             current=msg[inInd++];
-            QTextStream out(stdout);
-            out<<(char)current<<endl;
             if(symbols[current]==nullptr){
                 outInd+=bitCode(code,outInd,esc);
-                symbols[current]=splitESCSymbol(esc,current);
+                symbols[current]=splitESCSymbolDemo(esc,current,states, code);
                 code[outInd++]=current;
             }
             else{
                 outInd+=bitCode(code,outInd,symbols[current]);
-                incrementWeight(symbols[current]);
+                incrementWeightDemo(symbols[current], states, current, code);
             }
-                            states.push_back(new State(inInd,code,rootOfTree(esc)));
         }
         destroy(esc);
     }

@@ -36,7 +36,6 @@ void TreeView::drawNode(QPainter *painter, const code_tree::BT* root, int x, int
     str<<root->symbol<<std::endl<<root->weight;
 
     QString text = fontMetrics().elidedText(
-                //QString("%c\n%d").arg(root->symbol).arg(root->weight),
                 QString::fromLatin1(str.str().c_str()),
                 Qt::ElideLeft, rec.width());
     painter->drawText(rec, Qt::AlignCenter, text);

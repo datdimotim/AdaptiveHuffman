@@ -23,8 +23,15 @@ TreeWidget::TreeWidget(QWidget *parent) : QWidget(parent){
 
     QPushButton* back=new QPushButton("Предыдущий шаг");
     QPushButton* next=new QPushButton("Следующий шаг");
-    QLabel *step = new QLabel("Номер шага = 0");
-    code = new QLabel("Код: ");
+    step = new QLabel("-1");
+
+    QHBoxLayout *layoutCode = new QHBoxLayout;
+    QLabel *codeInf = new QLabel("Код: ");
+    code = new QLabel("");
+    code->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    layoutCode->addWidget(codeInf);
+    layoutCode->addWidget(code);
+
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(label);
@@ -39,7 +46,7 @@ TreeWidget::TreeWidget(QWidget *parent) : QWidget(parent){
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(layout);
     mainLayout->addLayout(infLayout);
-    mainLayout->addWidget(code);
+    mainLayout->addLayout(layoutCode);
     mainLayout->addWidget(view_);
 
 
@@ -55,23 +62,28 @@ TreeWidget::TreeWidget(QWidget *parent) : QWidget(parent){
 void TreeWidget::next(){
     if(states.size()-1<=stateIndex)return;
     view_->setTree(states[++stateIndex]->root);
+    code->setText(states[stateIndex]->msg);
+    step->setText(QString::asprintf("Номер шага = %d",stateIndex));
     update();
 }
 
 void TreeWidget::back(){
     if(stateIndex<1)return;
     view_->setTree(states[--stateIndex]->root);
+    code->setText(states[stateIndex]->msg);
+    step->setText(QString::asprintf("Номер шага = %d",stateIndex));
     update();
 }
 
 void TreeWidget::insert(){
     stateIndex=0;
+    step->setText(QString::asprintf("Номер шага = %d",stateIndex));
     char* str = new char[lineEdit_->text().length()+1];
     (*str)='\0';
     strcpy(str,lineEdit_->text().toLatin1().data());
     code_tree::demoEncode(states,str);
     view_->setTree(states[stateIndex]->root);
-    code->setText(str);
+    code->setText("");
     delete[] str;
     update();
 }

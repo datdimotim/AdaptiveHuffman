@@ -30,18 +30,6 @@ namespace code_tree {
         }
     };
 
-    class DemoTree{
-    public:
-        DemoTree();
-        ~DemoTree();
-        Node* updateTree(unsigned char symbol);
-
-    private:
-        Node* symbols[256]={nullptr};
-        Node* esc;
-        Node* root=nullptr;
-    };
-
     struct BT{
         char symbol;
         long weight;
@@ -64,7 +52,7 @@ namespace code_tree {
         char* msg=nullptr;
         BT* root=nullptr;
 
-        State(int currentSymbol, char* msg, Node* root){
+        State(int currentSymbol,const char* msg, Node* root){
             this->currentSymbol=currentSymbol;
             this->msg=new char[strlen(msg)+1];
             (*(this->msg))='\0';

@@ -24,9 +24,10 @@ private:
     QLineEdit *lineEdit_;
     QPushButton *button_;
     QLabel *code ;
+    QLabel *step;
 
     std::vector<code_tree::State*> states;
-    int stateIndex=0;
+    unsigned int stateIndex=0;
 };
 
 #endif // TREEWIDGET_H
