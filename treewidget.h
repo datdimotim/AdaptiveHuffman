@@ -26,7 +26,7 @@ private:
     QLabel *code ;
     QLabel *step;
 
-    std::vector<code_tree::State*> states;
+    std::vector<demo_haffman::State*> states;
     unsigned int stateIndex=0;
 };
 

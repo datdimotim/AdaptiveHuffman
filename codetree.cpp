@@ -180,7 +180,10 @@ namespace code_tree {
 
         destroy(esc);
     }
+}
 
+namespace demo_haffman{
+    using namespace code_tree;
     void incrementWeightDemo(Node* n, std::vector<State*> &states, char current, char* code){
         n->weight++;
                             states.push_back(new State(current,code,rootOfTree(n)));

@@ -30,6 +30,11 @@ namespace code_tree {
         }
     };
 
+    void encode(std::istream &in, std::ostream &code);
+    void decode(std::istream &in, std::ostream &code);
+}
+
+namespace demo_haffman{
     struct BT{
         char symbol;
         long weight;
@@ -52,7 +57,7 @@ namespace code_tree {
         char* msg=nullptr;
         BT* root=nullptr;
 
-        State(int currentSymbol,const char* msg, Node* root){
+        State(int currentSymbol,const char* msg, code_tree::Node* root){
             this->currentSymbol=currentSymbol;
             this->msg=new char[strlen(msg)+1];
             (*(this->msg))='\0';
@@ -64,7 +69,7 @@ namespace code_tree {
             if(root!=nullptr)delete root;
             if(msg!=nullptr)delete[] msg;
         }
-        static BT* captureTree(Node* root){
+        static BT* captureTree(code_tree::Node* root){
             if(root==nullptr)return nullptr;
             return new BT(root->symbol,
                           root->weight,
@@ -73,11 +78,8 @@ namespace code_tree {
         }
     };
 
-    void encode(std::istream &in, std::ostream &code);
-    void decode(std::istream &in, std::ostream &code);
+
     void demoEncode(std::vector<State*> &states, char* msg);
-
 }
-
 #endif // CODETREE
 

@@ -6,7 +6,7 @@
 
 TreeView::TreeView(QWidget *parent): QWidget(parent), tree(nullptr){}
 
-void TreeView::setTree(const code_tree::BT* tree){
+void TreeView::setTree(const demo_haffman::BT* tree){
     this->tree = tree;
     update();
 }
@@ -16,7 +16,7 @@ void TreeView::paintEvent(QPaintEvent *){
     drawNode(&painter, tree, 0, 0);
 }
 
-void TreeView::drawNode(QPainter *painter, const code_tree::BT* root, int x, int y){
+void TreeView::drawNode(QPainter *painter, const demo_haffman::BT* root, int x, int y){
     if(root==nullptr)return;
 
     painter->save();

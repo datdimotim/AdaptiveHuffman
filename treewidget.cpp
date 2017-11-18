@@ -81,7 +81,7 @@ void TreeWidget::insert(){
     char* str = new char[lineEdit_->text().length()+1];
     (*str)='\0';
     strcpy(str,lineEdit_->text().toLatin1().data());
-    code_tree::demoEncode(states,str);
+    demo_haffman::demoEncode(states,str);
     view_->setTree(states[stateIndex]->root);
     code->setText("");
     delete[] str;
