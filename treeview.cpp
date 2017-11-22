@@ -24,9 +24,14 @@ void TreeView::drawNode(QPainter *painter, const demo_haffman::BT* root, int x, 
 
     // circle
     QRect rec(p.x() - nodeWidth/4, p.y(), nodeWidth/2, nodeHeight/2);
-    painter->setPen(Qt::blue);
+    if(root->updated){
+        painter->setPen(Qt::red);
+    }
+    else{
+        painter->setPen(Qt::blue);
+    }
     painter->drawRect(rec);
-    painter->setPen(Qt::red);
+    painter->setPen(Qt::black);
 
     QFont font = painter->font() ;
     font.setPointSize(10);

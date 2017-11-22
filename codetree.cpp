@@ -184,15 +184,30 @@ namespace code_tree {
 
 namespace demo_haffman{
     using namespace code_tree;
+
+    BT* State::captureTreeRec(code_tree::Node* root, code_tree::Node* updated){
+        if(root==nullptr)return nullptr;
+        return new BT(root->symbol,
+                      root->weight,
+                      captureTreeRec(root->left,updated),
+                      captureTreeRec(root->right,updated),
+                      root==updated);
+    }
+
+    BT* State::captureTree(code_tree::Node* updated){
+        if(updated==nullptr)return nullptr;
+        return captureTreeRec(rootOfTree(updated),updated);
+    }
+
     void incrementWeightDemo(Node* n, std::vector<State*> &states, char current, char* code){
         n->weight++;
-                            states.push_back(new State(current,code,rootOfTree(n)));
+                            states.push_back(new State(current,code,n));
         if(n->parent==nullptr)return;
         Node* next=n->next;
         if(next==n->parent)next=next->next;
         if(next!=nullptr&&next->weight<n->weight){
             resolve(n);
-                            states.push_back(new State(current,code,rootOfTree(n)));
+                            states.push_back(new State(current,code,n));
         }
         incrementWeightDemo(n->parent, states, current, code);
     }

@@ -38,27 +38,29 @@ namespace demo_haffman{
     struct BT{
         char symbol;
         long weight;
+        bool updated;
         BT* left=nullptr;
         BT* right=nullptr;
         ~BT(){
             if(left!=nullptr)delete left;
             if(right!=nullptr)delete right;
         }
-        BT(char symbol, long weight, BT* left,BT* right){
+        BT(char symbol, long weight, BT* left,BT* right,bool updated){
             this->symbol=symbol;
             this->weight=weight;
             this->left=left;
             this->right=right;
+            this->updated=updated;
         }
     };
 
     struct State{
-        int currentSymbol;
+        int updatedSymbol;
         char* msg=nullptr;
         BT* root=nullptr;
 
-        State(int currentSymbol,const char* msg, code_tree::Node* root){
-            this->currentSymbol=currentSymbol;
+        State(int updatedSymbol,const char* msg, code_tree::Node* root){
+            this->updatedSymbol=updatedSymbol;
             this->msg=new char[strlen(msg)+1];
             (*(this->msg))='\0';
             stpcpy(this->msg,msg);
@@ -69,13 +71,9 @@ namespace demo_haffman{
             if(root!=nullptr)delete root;
             if(msg!=nullptr)delete[] msg;
         }
-        static BT* captureTree(code_tree::Node* root){
-            if(root==nullptr)return nullptr;
-            return new BT(root->symbol,
-                          root->weight,
-                          captureTree(root->left),
-                          captureTree(root->right));
-        }
+
+        static BT* captureTree(code_tree::Node* updated);
+        static BT* captureTreeRec(code_tree::Node* root, code_tree::Node* updated);
     };
 
 
